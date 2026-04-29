@@ -1,0 +1,4 @@
+LIVE DEPLOY CHECK
+commit: bf69d77
+date: 2026-04-29
+note: if you can read this file from your domain, Plesk is deploying latest repo content.
