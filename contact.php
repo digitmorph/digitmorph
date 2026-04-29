@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-$recipient = 'help@digitmorph.com';
+$recipient = 'help@digitmorph.gr';
 $redirectUrl = 'index.html#contact';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -44,7 +44,7 @@ $body = implode(PHP_EOL, $lines);
 $headers = [
     'MIME-Version: 1.0',
     'Content-Type: text/plain; charset=UTF-8',
-    'From: DIGITMORPH Website <no-reply@digitmorph.com>',
+    'From: DIGITMORPH Website <no-reply@digitmorph.gr>',
     'Reply-To: ' . $recipient,
     'X-Mailer: PHP/' . phpversion(),
 ];
