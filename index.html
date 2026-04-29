@@ -401,7 +401,8 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
+            gap: 0.9rem;
         }
 
         .art-head {
@@ -478,6 +479,7 @@
             display: grid;
             gap: 0.85rem;
             max-width: 320px;
+            margin-top: auto;
             margin-left: auto;
             padding: 1.25rem;
             border-radius: 24px;
@@ -498,17 +500,20 @@
         }
 
         .ai-build-note {
-            margin-top: 0.9rem;
-            margin-right: auto;
-            max-width: 320px;
-            padding: 0.85rem 1rem;
+            align-self: flex-start;
+            margin-top: 0.2rem;
+            max-width: 360px;
+            padding: 0.9rem 1.05rem;
             border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.24);
-            background: rgba(255, 255, 255, 0.12);
-            color: rgba(250, 247, 241, 0.92);
-            font-size: 0.92rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 600;
             line-height: 1.5;
             backdrop-filter: blur(8px);
+            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.26);
+            z-index: 2;
             animation: notePulse 3.2s ease-in-out infinite;
         }
 
@@ -814,6 +819,22 @@
             width: 22px;
             height: 22px;
             fill: currentColor;
+        }
+
+        .live-build-badge {
+            position: fixed;
+            left: 0.75rem;
+            bottom: 0.75rem;
+            z-index: 35;
+            padding: 0.55rem 0.7rem;
+            border-radius: 12px;
+            border: 1px solid rgba(17, 17, 17, 0.2);
+            background: rgba(255, 255, 255, 0.92);
+            color: #111111;
+            font-size: 0.75rem;
+            letter-spacing: 0.04em;
+            line-height: 1.35;
+            box-shadow: 0 10px 24px rgba(17, 17, 17, 0.18);
         }
 
         .site-footer {
@@ -1206,6 +1227,7 @@
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79a15.54 15.54 0 0 0 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C10.07 21 3 13.93 3 5c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.58.11.35.03.74-.25 1.01l-2.2 2.2Z"></path></svg>
             </a>
         </div>
+        <div class="live-build-badge" aria-label="Live build version">LIVE BUILD 2026-04-29 · 7892aaa</div>
     </div>
     <script>
         (function () {
