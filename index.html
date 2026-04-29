@@ -317,7 +317,7 @@
 
         h1 {
             margin-top: 1.3rem;
-            font-size: clamp(2.9rem, 5.8vw, 5.4rem);
+            font-size: clamp(2.05rem, 4.2vw, 3.4rem);
             max-width: 14ch;
             line-height: 1.02;
             text-wrap: balance;
@@ -500,9 +500,10 @@
         }
 
         .ai-build-note {
-            align-self: flex-start;
-            margin-top: 0.2rem;
-            max-width: 360px;
+            position: absolute;
+            left: 1rem;
+            top: 9rem;
+            max-width: min(360px, calc(100% - 2rem));
             padding: 0.9rem 1.05rem;
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -514,16 +515,9 @@
             backdrop-filter: blur(8px);
             box-shadow: 0 12px 26px rgba(0, 0, 0, 0.26);
             z-index: 2;
-            --note-bounce-x: clamp(46px, 8.5vw, 150px);
-            --note-bounce-y: clamp(18px, 3.2vw, 54px);
             will-change: transform;
-            animation: noteBounce 1.55s linear infinite;
             cursor: pointer;
             user-select: none;
-        }
-
-        .ai-build-note.is-paused {
-            animation-play-state: paused;
         }
 
         .signal-lines {
@@ -888,32 +882,6 @@
             }
         }
 
-        @keyframes noteBounce {
-            0% {
-                transform: translate(0, 0);
-            }
-
-            20% {
-                transform: translate(var(--note-bounce-x), 0);
-            }
-
-            40% {
-                transform: translate(var(--note-bounce-x), var(--note-bounce-y));
-            }
-
-            60% {
-                transform: translate(12px, var(--note-bounce-y));
-            }
-
-            80% {
-                transform: translate(calc(var(--note-bounce-x) * 0.7), calc(var(--note-bounce-y) * 0.45));
-            }
-
-            100% {
-                transform: translate(0, 0);
-            }
-        }
-
         @media (max-width: 1040px) {
             .hero-grid,
             .services-grid,
@@ -973,7 +941,7 @@
             }
 
             h1 {
-                font-size: clamp(2rem, 8.2vw, 2.8rem);
+                font-size: clamp(1.8rem, 7.5vw, 2.6rem);
                 max-width: none;
                 text-wrap: pretty;
             }
@@ -1254,34 +1222,75 @@
     <script>
         (function () {
             var statusBox = document.getElementById("form-status");
-            if (!statusBox) {
-                return;
-            }
+            if (statusBox) {
+                var params = new URLSearchParams(window.location.search);
+                var status = params.get("status");
+                var message = "";
 
-            var params = new URLSearchParams(window.location.search);
-            var status = params.get("status");
-            var message = "";
+                if (status === "success") {
+                    message = "Το αίτημά σας στάλθηκε επιτυχώς. Θα επικοινωνήσουμε μαζί σας σύντομα.";
+                    statusBox.classList.add("is-visible", "is-success");
+                } else if (status === "error") {
+                    message = "Η αποστολή δεν ολοκληρώθηκε. Ελέγξτε τα στοιχεία σας ή χρησιμοποιήστε email, WhatsApp ή Viber.";
+                    statusBox.classList.add("is-visible", "is-error");
+                }
 
-            if (status === "success") {
-                message = "Το αίτημά σας στάλθηκε επιτυχώς. Θα επικοινωνήσουμε μαζί σας σύντομα.";
-                statusBox.classList.add("is-visible", "is-success");
-            } else if (status === "error") {
-                message = "Η αποστολή δεν ολοκληρώθηκε. Ελέγξτε τα στοιχεία σας ή χρησιμοποιήστε email, WhatsApp ή Viber.";
-                statusBox.classList.add("is-visible", "is-error");
-            }
-
-            if (message) {
-                statusBox.textContent = message;
-                history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+                if (message) {
+                    statusBox.textContent = message;
+                    history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+                }
             }
 
             var aiBuildNote = document.querySelector(".ai-build-note");
-            if (aiBuildNote) {
-                var toggleNotePause = function () {
-                    var shouldPause = !aiBuildNote.classList.contains("is-paused");
-                    aiBuildNote.classList.toggle("is-paused", shouldPause);
-                    aiBuildNote.setAttribute("aria-pressed", shouldPause ? "true" : "false");
+            var artWrap = document.querySelector(".art-wrap");
+            if (aiBuildNote && artWrap) {
+                var paused = false;
+                var x = 0;
+                var y = 0;
+                var vx = 2.8;
+                var vy = 2.35;
+
+                var clampPosition = function () {
+                    var maxX = Math.max(0, artWrap.clientWidth - aiBuildNote.offsetWidth - 16);
+                    var maxY = Math.max(0, artWrap.clientHeight - aiBuildNote.offsetHeight - 16);
+                    x = Math.min(maxX, Math.max(0, x));
+                    y = Math.min(maxY, Math.max(0, y));
                 };
+
+                var animate = function () {
+                    if (!paused) {
+                        var maxX = Math.max(0, artWrap.clientWidth - aiBuildNote.offsetWidth - 16);
+                        var maxY = Math.max(0, artWrap.clientHeight - aiBuildNote.offsetHeight - 16);
+
+                        x += vx;
+                        y += vy;
+
+                        if (x <= 0 || x >= maxX) {
+                            vx *= -1;
+                            x = Math.min(maxX, Math.max(0, x));
+                        }
+
+                        if (y <= 0 || y >= maxY) {
+                            vy *= -1;
+                            y = Math.min(maxY, Math.max(0, y));
+                        }
+
+                        aiBuildNote.style.transform = "translate(" + x + "px, " + y + "px)";
+                    }
+
+                    requestAnimationFrame(animate);
+                };
+
+                var toggleNotePause = function () {
+                    paused = !paused;
+                    aiBuildNote.classList.toggle("is-paused", paused);
+                    aiBuildNote.setAttribute("aria-pressed", paused ? "true" : "false");
+                };
+
+                window.addEventListener("resize", function () {
+                    clampPosition();
+                    aiBuildNote.style.transform = "translate(" + x + "px, " + y + "px)";
+                });
 
                 aiBuildNote.addEventListener("click", toggleNotePause);
                 aiBuildNote.addEventListener("keydown", function (event) {
@@ -1290,6 +1299,9 @@
                         toggleNotePause();
                     }
                 });
+
+                clampPosition();
+                animate();
             }
         }());
     </script>
