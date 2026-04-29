@@ -497,6 +497,21 @@
             line-height: 1.4;
         }
 
+        .ai-build-note {
+            margin-top: 0.9rem;
+            margin-right: auto;
+            max-width: 320px;
+            padding: 0.85rem 1rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            background: rgba(255, 255, 255, 0.12);
+            color: rgba(250, 247, 241, 0.92);
+            font-size: 0.92rem;
+            line-height: 1.5;
+            backdrop-filter: blur(8px);
+            animation: notePulse 3.2s ease-in-out infinite;
+        }
+
         .signal-lines {
             position: absolute;
             inset: auto -10% 20% auto;
@@ -532,6 +547,13 @@
 
         h2 {
             font-size: clamp(2.05rem, 4.2vw, 3.4rem);
+        }
+
+        .section-header h2 {
+            line-height: 1.08;
+            letter-spacing: 0;
+            text-wrap: balance;
+            max-width: 20ch;
         }
 
         .services,
@@ -836,6 +858,19 @@
             }
         }
 
+        @keyframes notePulse {
+            0%,
+            100% {
+                transform: translateY(0);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
+            }
+
+            50% {
+                transform: translateY(-3px);
+                box-shadow: 0 14px 26px rgba(0, 0, 0, 0.22);
+            }
+        }
+
         @media (max-width: 1040px) {
             .hero-grid,
             .services-grid,
@@ -977,6 +1012,7 @@
                     <div class="hero-art reveal reveal-delay-1">
                         <div class="art-wrap">
                             <img class="hero-logo-image" src="logo.png" alt="DIGITMORPH εταιρικό λογότυπο">
+                            <div class="ai-build-note">Το site έχει φτιαχτεί με τη χρήση εργαλείων τεχνητής νοημοσύνης.</div>
                             <div class="signal-lines"></div>
                             <div class="art-panel">
                                 <small>Operational Layer</small>
