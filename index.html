@@ -518,6 +518,12 @@
             --note-bounce-y: clamp(18px, 3.2vw, 54px);
             will-change: transform;
             animation: noteBounce 1.55s linear infinite;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .ai-build-note.is-paused {
+            animation-play-state: paused;
         }
 
         .signal-lines {
@@ -1049,7 +1055,7 @@
                     <div class="hero-art reveal reveal-delay-1">
                         <div class="art-wrap">
                             <img class="hero-logo-image" src="logo.png" alt="DIGITMORPH εταιρικό λογότυπο">
-                            <div class="ai-build-note">Το site έχει φτιαχτεί με τη χρήση εργαλείων τεχνητής νοημοσύνης.</div>
+                            <div class="ai-build-note" role="button" tabindex="0" aria-pressed="false" title="Πάτησε για pause/resume κίνησης">Το site έχει φτιαχτεί με τη χρήση εργαλείων τεχνητής νοημοσύνης.</div>
                             <div class="signal-lines"></div>
                             <div class="art-panel">
                                 <small>Operational Layer</small>
@@ -1267,6 +1273,23 @@
             if (message) {
                 statusBox.textContent = message;
                 history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+            }
+
+            var aiBuildNote = document.querySelector(".ai-build-note");
+            if (aiBuildNote) {
+                var toggleNotePause = function () {
+                    var shouldPause = !aiBuildNote.classList.contains("is-paused");
+                    aiBuildNote.classList.toggle("is-paused", shouldPause);
+                    aiBuildNote.setAttribute("aria-pressed", shouldPause ? "true" : "false");
+                };
+
+                aiBuildNote.addEventListener("click", toggleNotePause);
+                aiBuildNote.addEventListener("keydown", function (event) {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        toggleNotePause();
+                    }
+                });
             }
         }());
     </script>
